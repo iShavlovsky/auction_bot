@@ -4,13 +4,16 @@ import logging
 from aiogram import Bot, Dispatcher, F
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
+from aiogram.filters import Command
 
 from core.handlers.base import get_start, get_message_json
 from core.data.config import settings
 from core.handlers.car_search import send_mark
+from core.utils.commands import set_commands
 
 
 async def start_bot(bot: Bot) -> None:
+    await set_commands(bot, settings.bots.admin_ids)
     for admin_id in settings.bots.admin_ids:
         await bot.send_message(chat_id=admin_id, text='Бот запущен')
 
@@ -36,9 +39,11 @@ async def start() -> None:
     dp.startup.register(start_bot)
     dp.shutdown.register(stop_bot)
 
-    dp.message.register(send_mark, F.text == '1')
-    dp.message.register(get_message_json, F.text == 'json')
+    dp.message.register(get_start, Command(commands=['start', 'run']))
     dp.message.register(get_start, F.text == 'start')
+    dp.message.register(send_mark, Command(commands=['allMarks', 'marks']))
+    dp.message.register(send_mark, F.text == 'marks')
+    dp.message.register(get_message_json, F.text == 'json')
 
     try:
         await dp.start_polling(bot)
