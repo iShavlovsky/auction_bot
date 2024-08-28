@@ -11,6 +11,10 @@ async def set_commands(bot:Bot, admin_ids=None):
         BotCommand(
             command='marks',
             description='Все марки'
+        ),
+        BotCommand(
+            command='marksinline',
+            description='Все марки в сообщение'
         )
     ]
 

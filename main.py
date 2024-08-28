@@ -8,7 +8,7 @@ from aiogram.filters import Command
 
 from core.handlers.base import get_start, get_message_json
 from core.data.config import settings
-from core.handlers.car_search import send_mark
+from core.handlers.car_search import send_mark, send_mark_inline
 from core.utils.commands import set_commands
 
 
@@ -41,8 +41,13 @@ async def start() -> None:
 
     dp.message.register(get_start, Command(commands=['start', 'run']))
     dp.message.register(get_start, F.text == 'start')
-    dp.message.register(send_mark, Command(commands=['allMarks', 'marks']))
+
+    dp.message.register(send_mark, Command(commands=['allmarks', 'marks']))
     dp.message.register(send_mark, F.text == 'marks')
+
+    dp.message.register(send_mark_inline, Command(commands=['allmarksinline', 'marksinline']))
+    dp.message.register(send_mark_inline, F.text == 'marksinline')
+
     dp.message.register(get_message_json, F.text == 'json')
 
     try:

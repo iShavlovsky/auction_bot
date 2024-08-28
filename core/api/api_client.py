@@ -1,7 +1,9 @@
+from typing import List
+
 import requests
 from urllib.parse import quote_plus
 from core.data.config import settings_api
-from core.data.models import FilterCriteria
+from core.data.models import FilterCriteria, Mark
 from dataclasses import asdict
 
 
@@ -29,9 +31,13 @@ class CarAPI:
             print("Ошибка запроса:", response.status_code, response.text)
             return None
 
-    def get_all_marks(self):
+    def get_all_marks(self) -> List[Mark]:
         sql = "SELECT DISTINCT marka_id, marka_name FROM main"
-        return self._execute_query(sql)
+        result = self._execute_query(sql)
+        print(result)
+        if result:
+            return [Mark(**item) for item in result]
+        return []
 
     def get_cars(self, criteria: FilterCriteria):
         sql = "SELECT * FROM main WHERE 1=1"
