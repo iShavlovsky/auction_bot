@@ -1,9 +1,11 @@
 from typing import List
 
 from aiogram import types, html
-from core.api.api_client import CarAPI
-from core.keyboards.reply import create_reply_buttons, ButtonReplyParams
-from core.keyboards.inline import create_inline_buttons, ButtonInlineParams
+
+from core.api import CarAPI
+from core.keyboards import ButtonReplyParams, create_reply_buttons, ButtonInlineParams, \
+    create_inline_buttons
+from core.utils import AllMarks
 
 car_api = CarAPI()
 
@@ -27,7 +29,7 @@ async def send_mark_inline(message: types.Message):
 
     if marks:
         marka_names: List[ButtonInlineParams] = [
-            {"text": mark.MARKA_NAME, "callback_data": f"{mark.MARKA_ID}"}
+            ButtonInlineParams(text=mark.MARKA_NAME, callback_data=AllMarks(marka=mark.MARKA_NAME, id=mark.MARKA_ID).pack())
             for mark in marks
         ]
 
@@ -36,6 +38,3 @@ async def send_mark_inline(message: types.Message):
         await message.answer(f"Выберите марку автомобиля! Всего {html.bold(len(marks))}.", parse_mode='HTML', reply_markup=keyboard)
     else:
         await message.answer("Не удалось получить список марок. Попробуйте позже.")
-
-
-

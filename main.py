@@ -6,10 +6,9 @@ from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from aiogram.filters import Command
 
-from core.handlers.base import get_start, get_message_json
-from core.data.config import settings
-from core.handlers.car_search import send_mark, send_mark_inline
-from core.utils.commands import set_commands
+from core.data import settings
+from core.handlers import get_start, send_mark, send_mark_inline, selected_id_mark, get_message_json
+from core.utils import set_commands, AllMarks
 
 
 async def start_bot(bot: Bot) -> None:
@@ -47,6 +46,7 @@ async def start() -> None:
 
     dp.message.register(send_mark_inline, Command(commands=['allmarksinline', 'marksinline']))
     dp.message.register(send_mark_inline, F.text == 'marksinline')
+    dp.callback_query.register(selected_id_mark, AllMarks.filter())
 
     dp.message.register(get_message_json, F.text == 'json')
 

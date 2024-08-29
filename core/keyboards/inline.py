@@ -1,4 +1,5 @@
-from aiogram.types import WebAppInfo, InlineKeyboardButton, LoginUrl
+from aiogram.filters.callback_data import CallbackData
+from aiogram.types import WebAppInfo, LoginUrl
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from typing import List, Optional, Union, Tuple, TypedDict
 
@@ -20,7 +21,7 @@ def create_inline_buttons(
         row_width: Union[int, Tuple[int, int, int]] = 1,
         placeholder="Выберите опцию"):
     keyboard_builder = InlineKeyboardBuilder()
-
+    print(items)
     for item in items:
         keyboard_builder.button(**item)
 
